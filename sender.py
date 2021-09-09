@@ -11,6 +11,7 @@ msg = '{"value0": {"value0": 1631182529,"value1": "test","value2": [0.0,0.0,0.0,
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # generate socket named udp
 udp.setblocking(False) # set socket to be non-blocking	
 
+# loop forever
 while True:
     try:
         # send the binarized string message

@@ -4,20 +4,23 @@ import time
 SLEEP_TIME=1.0 #[s]
 RECEIVER_IP = 'localhost'
 RECEIVER_PORT = 56483
+MAX_BUFFER_SIZE = 1024
 
 address = (RECEIVER_IP, RECEIVER_PORT) # set receiver's IP and port.
 udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # generate socket named udp
 udp.bind(address) # bind ip address to the socket
 udp.setblocking(False) # set socket to be non-blocking	
 
-while True: #受信ループ
+# loop forever
+while True:
     time.sleep(SLEEP_TIME) # sleep for a while
     try:
-        rcv_byte = bytes() #バイトデータ受信用変数
-        rcv_byte, addr = udp.recvfrom(1024) #括弧内は最大バイト数設定
-        msg = rcv_byte.decode() #バイトデータを文字列に変換
-        print(msg) #文字列表示
-        if msg == 'close': #受信した文字列がcloseならUDPソケットを閉じて終了
+        rcv_byte = bytes() # define buffer to receive msg
+        rcv_byte, addr = udp.recvfrom(MAX_BUFFER_SIZE) # get message
+        msg = rcv_byte.decode() # convert bytedata to string type
+        print(msg) # show the received message
+        # if the socket receives "close", then close udp connection.
+        if msg == 'close': 
             udp.close()
             break
 
@@ -28,5 +31,5 @@ while True: #受信ループ
             continue
 
     # close socket when the process is interrupted.
-    except KeyboardInterrupt:#強制終了を検知したらUDPソケットを閉じて終了
+    except KeyboardInterrupt:
         udp.close()
