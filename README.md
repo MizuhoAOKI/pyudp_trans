@@ -10,7 +10,8 @@ Launch two separate command lines, and run these commands :
 $ python sender.py
 
 ...
-[
+
+Sent following message :
   {
     "time": 13.0,
     "control_input": {
@@ -23,7 +24,7 @@ $ python sender.py
       }
     }
   }
-]
+
 
 ```
 
@@ -32,8 +33,8 @@ $ python sender.py
 $ python receiver.py
 
 ...
-Got json object below : 
-[
+
+Received json object :
   {
     "time": 13.0,
     "control_input": {
@@ -46,6 +47,9 @@ Got json object below :
       }
     }
   }
-]
+time = 13.0
+steer_angle = 2.0
+throttle=1.0
+brake=0.0
 
 ```

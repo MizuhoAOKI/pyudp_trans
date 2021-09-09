@@ -8,6 +8,7 @@ TARGET_PORT = 56483
 
 ## JSON message template (example) : 
 #   {
+#     "time" : simulation_time [s]
 #     "control_input":{
 #         "lateral":{
 #         "steer_angle": steer_angle_value[rad]
@@ -20,12 +21,12 @@ TARGET_PORT = 56483
 
 def main():
     address = (TARGET_IP, TARGET_PORT) # set target IP and port number.
-    # make json structure with python object
+    
+    # initialize variables to send
     sim_time = 0.0
     steer_angle = 2.0
     throttle = 1.0
     brake = 0.0
-
 
     udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # generate socket named udp
     udp.setblocking(False) # set socket to be non-blocking	
@@ -33,8 +34,8 @@ def main():
     try:
         # loop forever
         while True:
-            # prepare message to send
-            json_msg = [{"time": sim_time,
+            # prepare json message to send
+            json_msg = {"time": sim_time,
                         "control_input": {\
                         "lateral" : {\
                             "steer_angle" : steer_angle
@@ -43,11 +44,11 @@ def main():
                             "throttle" : throttle,\
                             "brake"    : brake \
                         }  }\
-                    }]
+                        }
             msg = json.dumps(json_msg, indent=2) # convert python object to string
             # send the binarized string message
             udp.sendto(msg.encode(), address) 
-            print("Sent following message")
+            print("\nSent following message :")
             print(msg)
             time.sleep(SLEEP_TIME) # sleep for a while
             sim_time += SLEEP_TIME # increment

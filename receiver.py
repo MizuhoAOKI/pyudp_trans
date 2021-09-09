@@ -25,28 +25,27 @@ def main():
                 msg = rcv_byte.decode() # convert bytedata to string type
                 # if the socket receives "close", then close udp connection.
                 if msg == 'close': 
-                    print("Received command to close communication.")
+                    print("\nReceived command to close communication.")
                     udp.close()
                     break
                 elif is_json(msg):
                     # if msg is json format
-                    print("Received json object : ")
+                    print("\nReceived json object : ")
                     json_msg = json.loads(msg)
-                    print(json.dumps(json_msg,indent=2))
-
-                    print(f"json_msg['value0']={json_msg['value0']}")
-                    print(f"json_msg['value0_1']={json_msg['value0']['value1']}")
-                    print(f"json_msg['value0_1']={json_msg['value0']['value1']}")
-                    print(f"json_msg['value0_2']={json_msg['value0']['value2'][2]}")
+                    print(json.dumps(json_msg,indent=2)) # print json contexts
+                    print(f"time = {json_msg['time']}")
+                    print(f"steer_angle = {json_msg['control_input']['lateral']['steer_angle']}")
+                    print(f"throttle={json_msg['control_input']['longitudinal']['throttle']}")
+                    print(f"brake={json_msg['control_input']['longitudinal']['brake']}")
                 else:
                     # simply output msg
-                    print("Received simple text message : ")
+                    print("\nReceived simple text message : ")
                     print(msg)
 
             # not receiving message yet
             except Exception as e:
                 if e.args[0]==10035: 
-                    print("Not receive new msg yet.")
+                    print("\nNot receive new msg yet.")
                     continue
 
     # close socket when the process is interrupted.
